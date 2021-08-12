@@ -1,0 +1,6 @@
+mysql:
+  user: "username"
+  password: "password"
+  database: "database"
+  host: "localhost:3306"
+  table: "playerstats"
