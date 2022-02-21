@@ -1,6 +1,6 @@
 plugins {
     id("com.github.johnrengelman.shadow") version "7.0.0"
-    id("net.kyori.indra") version "2.0.6"
+    id("net.kyori.indra") version "2.1.1"
     id("net.minecrell.plugin-yml.bukkit") version "0.4.0"
     java
 }
@@ -16,15 +16,15 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT")
-    compileOnly("me.clip:placeholderapi:2.10.10")
+    compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT")
+    compileOnly("me.clip:placeholderapi:2.11.1")
     implementation("co.aikar:taskchain-bukkit:3.7.2")
     implementation("co.aikar:idb-bukkit:1.0.0-SNAPSHOT")
-    implementation("com.zaxxer:HikariCP:5.0.0")
+    implementation("com.zaxxer:HikariCP:5.0.1")
 }
 
 indra {
-    javaVersions().target(16)
+    javaVersions().target(17)
 }
 
 tasks {
@@ -45,7 +45,7 @@ tasks {
 bukkit {
     main = "fi.fabianadrian.mmstatbridge.MMStatBridge"
     name = rootProject.name
-    apiVersion = "1.17"
+    apiVersion = "1.18"
     author = "FabianAdrian"
     depend = listOf("PlaceholderAPI")
 }
