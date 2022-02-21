@@ -1,16 +1,17 @@
-package fi.fabianadrian.mmstatbridge;
+package fi.fabianadrian.mmstatbridge.listener;
 
+import fi.fabianadrian.mmstatbridge.MMStatBridge;
 import fi.fabianadrian.mmstatbridge.user.UserManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class PlayerEvent implements Listener {
+public class PlayerListener implements Listener {
 
     private final UserManager userManager;
 
-    public PlayerEvent(MMStatBridge plugin) {
+    public PlayerListener(MMStatBridge plugin) {
         this.userManager = plugin.getUserManager();
     }
 

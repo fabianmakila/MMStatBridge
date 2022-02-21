@@ -6,6 +6,7 @@ import co.aikar.idb.Database;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
+import fi.fabianadrian.mmstatbridge.listener.PlayerListener;
 import fi.fabianadrian.mmstatbridge.user.UserManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -51,7 +52,7 @@ public class MMStatBridge extends JavaPlugin {
 
         userManager = new UserManager(this);
 
-        Bukkit.getPluginManager().registerEvents(new PlayerEvent(this), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerListener(this), this);
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new Placeholders(this).register();
