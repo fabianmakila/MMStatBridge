@@ -1,7 +1,7 @@
 plugins {
-    id("com.github.johnrengelman.shadow") version "7.0.0"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
     id("net.kyori.indra") version "2.1.1"
-    id("net.minecrell.plugin-yml.bukkit") version "0.4.0"
+    id("net.minecrell.plugin-yml.bukkit") version "0.5.1"
     java
 }
 
