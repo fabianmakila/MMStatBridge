@@ -1,27 +1,27 @@
 package fi.fabianadrian.mmstatbridge.listener;
 
 import fi.fabianadrian.mmstatbridge.MMStatBridge;
-import fi.fabianadrian.mmstatbridge.user.UserManager;
+import fi.fabianadrian.mmstatbridge.stat.StatisticCache;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class PlayerListener implements Listener {
+public final class PlayerListener implements Listener {
 
-    private final UserManager userManager;
+    private final StatisticCache statisticCache;
 
     public PlayerListener(MMStatBridge plugin) {
-        this.userManager = plugin.getUserManager();
+        this.statisticCache = plugin.statisticCache();
     }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        userManager.loadUser(e.getPlayer());
+        statisticCache.update(e.getPlayer().getUniqueId());
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-        userManager.unloadUser(e.getPlayer().getUniqueId());
+        statisticCache.remove(e.getPlayer().getUniqueId());
     }
 }

@@ -1,17 +1,17 @@
 package fi.fabianadrian.mmstatbridge;
 
-import fi.fabianadrian.mmstatbridge.user.StatStorage;
-import fi.fabianadrian.mmstatbridge.user.User;
+import fi.fabianadrian.mmstatbridge.stat.Statistic;
+import fi.fabianadrian.mmstatbridge.stat.StatisticCache;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
-public class Placeholders extends PlaceholderExpansion {
+public final class Placeholders extends PlaceholderExpansion {
 
-    private final MMStatBridge plugin;
+    private final StatisticCache statisticCache;
 
     public Placeholders(MMStatBridge plugin) {
-        this.plugin = plugin;
+        this.statisticCache = plugin.statisticCache();
     }
 
     @Override
@@ -36,17 +36,13 @@ public class Placeholders extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String params) {
-
-        User user = plugin.getUserManager().getUser(player.getUniqueId());
-        if (user == null) return "0";
-
-        StatStorage.Statistic statistic;
+        Statistic statistic;
         try {
-            statistic = StatStorage.Statistic.valueOf(params.toUpperCase());
+            statistic = Statistic.valueOf(params.toUpperCase());
         } catch (IllegalArgumentException e) {
-            return null;
+            return "0";
         }
 
-        return String.valueOf(user.getStatistic(statistic));
+        return String.valueOf(statisticCache.statistic(player.getUniqueId(), statistic));
     }
 }

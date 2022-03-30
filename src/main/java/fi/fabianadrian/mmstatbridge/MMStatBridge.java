@@ -7,15 +7,15 @@ import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
 import fi.fabianadrian.mmstatbridge.listener.PlayerListener;
-import fi.fabianadrian.mmstatbridge.user.UserManager;
+import fi.fabianadrian.mmstatbridge.stat.StatisticCache;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class MMStatBridge extends JavaPlugin {
+public final class MMStatBridge extends JavaPlugin {
 
     private static TaskChainFactory taskChainFactory;
-    private UserManager userManager;
+    private StatisticCache statisticCache;
 
     public static <T> TaskChain<T> newChain() {
         return taskChainFactory.newChain();
@@ -25,8 +25,8 @@ public class MMStatBridge extends JavaPlugin {
         return taskChainFactory.newSharedChain(name);
     }
 
-    public UserManager getUserManager() {
-        return userManager;
+    public StatisticCache statisticCache() {
+        return statisticCache;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class MMStatBridge extends JavaPlugin {
         Database db = BukkitDB.createHikariDatabase(this, dbUser, dbPass, dbName, hostAndPort);
         DB.setGlobalDatabase(db);
 
-        userManager = new UserManager(this);
+        statisticCache = new StatisticCache(this);
 
         Bukkit.getPluginManager().registerEvents(new PlayerListener(this), this);
 
