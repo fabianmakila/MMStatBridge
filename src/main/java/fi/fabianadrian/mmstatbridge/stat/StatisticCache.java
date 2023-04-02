@@ -10,6 +10,7 @@ import org.intellij.lang.annotations.Language;
 import java.sql.SQLException;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -31,14 +32,16 @@ public final class StatisticCache {
         this.QUERY = String.format(QUERY_TEMPLATE, tableName);
     }
 
-    public int statistic(UUID uuid, Statistic statistic) {
+    // Returns an empty optional if data is not loaded yet
+    // Otherwise returns a number
+    public Optional<Integer> statistic(UUID uuid, Statistic statistic) {
         Map<Statistic, Integer> statMap = this.statistics.synchronous().getIfPresent(uuid);
         if (statMap == null) {
             this.statistics.get(uuid);
-            return 0;
+            return Optional.empty();
         }
 
-        return statMap.getOrDefault(statistic, 0);
+        return Optional.of(statMap.getOrDefault(statistic, 0));
     }
 
     public void invalidate(UUID uuid) {
@@ -49,7 +52,7 @@ public final class StatisticCache {
         try {
             DbRow dbRow = DB.getFirstRow(this.QUERY, uuid.toString());
             if (dbRow == null || dbRow.isEmpty()) {
-                return null;
+                return Map.of();
             }
 
             Map<Statistic, Integer> statisticMap = new EnumMap<>(Statistic.class);

@@ -6,6 +6,8 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
+
 public final class Placeholders extends PlaceholderExpansion {
 
     private final StatisticCache statisticCache;
@@ -40,9 +42,14 @@ public final class Placeholders extends PlaceholderExpansion {
         try {
             statistic = Statistic.valueOf(params.toUpperCase());
         } catch (IllegalArgumentException e) {
-            return "0";
+            return null;
         }
 
-        return String.valueOf(this.statisticCache.statistic(player.getUniqueId(), statistic));
+        Optional<Integer> optional = this.statisticCache.statistic(player.getUniqueId(), statistic);
+        if (optional.isPresent()) {
+            return String.valueOf(optional.get());
+        }
+
+        return "loading";
     }
 }
