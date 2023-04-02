@@ -20,16 +20,16 @@ public final class StatisticCache {
     @Language("SQL")
     private final String QUERY;
 
-    public StatisticCache(MMStatBridge plugin) {
-        String tableName = plugin.getConfig().getString("mysql.table");
-        this.QUERY = String.format(QUERY_TEMPLATE, tableName);
-    }
-
     private final AsyncLoadingCache<UUID, Map<Statistic, Integer>> statistics = Caffeine.newBuilder()
             .maximumSize(100)
             .expireAfterWrite(5, TimeUnit.MINUTES)
             .refreshAfterWrite(1, TimeUnit.MINUTES)
             .buildAsync(this::createStatistic);
+
+    public StatisticCache(MMStatBridge plugin) {
+        String tableName = plugin.getConfig().getString("mysql.table");
+        this.QUERY = String.format(QUERY_TEMPLATE, tableName);
+    }
 
     public int statistic(UUID uuid, Statistic statistic) {
         Map<Statistic, Integer> statMap = this.statistics.synchronous().getIfPresent(uuid);
