@@ -38,6 +38,10 @@ public final class StatisticCache {
         return statMap.getOrDefault(statistic, 0);
     }
 
+    public void invalidate(UUID uuid) {
+        this.statistics.synchronous().invalidate(uuid);
+    }
+
     private Map<Statistic, Integer> createStatistic(UUID uuid) {
         try {
             DbRow dbRow = DB.getFirstRow(this.QUERY, uuid.toString());

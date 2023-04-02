@@ -16,12 +16,7 @@ public final class PlayerListener implements Listener {
     }
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent e) {
-        statisticCache.update(e.getPlayer().getUniqueId());
-    }
-
-    @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-        statisticCache.remove(e.getPlayer().getUniqueId());
+        this.statisticCache.invalidate(e.getPlayer().getUniqueId());
     }
 }
