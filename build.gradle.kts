@@ -33,7 +33,9 @@ tasks {
     }
 
     shadowJar {
-        //minimize()
+        minimize {
+            exclude(dependency("com.github.ben-manes.caffeine:caffeine:.*"))
+        }
         isEnableRelocation = true
         relocationPrefix = "fi.fabianadrian.mmstatbridge.dependency"
     }
