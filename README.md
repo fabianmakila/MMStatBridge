@@ -1,6 +1,6 @@
 # MMStatBridge [![PaperMC Version][Badge-PaperVersion]][PaperMC-URL] [![Plugin Release][Badge-Release]][Release-URL]
 
-[Badge-PaperVersion]: https://img.shields.io/badge/PaperMC-1.17.1-blue?style=for-the-badge
+[Badge-PaperVersion]: https://img.shields.io/badge/PaperMC-1.18.1-blue?style=for-the-badge
 [PaperMC-URL]: https://papermc.io
 [Badge-Release]: https://img.shields.io/badge/Plugin_Version-0.1.0-green?style=for-the-badge
 [Release-URL]: https://github.com/fabianmakila/MMStatBridge/releases

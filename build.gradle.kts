@@ -1,12 +1,12 @@
 plugins {
-    id("com.github.johnrengelman.shadow") version "7.0.0"
-    id("net.kyori.indra") version "2.0.6"
-    id("net.minecrell.plugin-yml.bukkit") version "0.4.0"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("net.kyori.indra") version "3.0.1"
+    id("net.minecrell.plugin-yml.bukkit") version "0.5.3"
     java
 }
 
 group = "fi.fabianadrian"
-version = "0.1.0"
+version = "0.3.0"
 
 repositories {
     mavenCentral()
@@ -16,36 +16,35 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT")
-    compileOnly("me.clip:placeholderapi:2.10.10")
-    implementation("co.aikar:taskchain-bukkit:3.7.2")
+    compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
+    compileOnly("me.clip:placeholderapi:2.11.3")
     implementation("co.aikar:idb-bukkit:1.0.0-SNAPSHOT")
-    implementation("com.zaxxer:HikariCP:5.0.0")
+    implementation("com.zaxxer:HikariCP:5.0.1")
+    implementation("com.github.ben-manes.caffeine:caffeine:3.1.5")
 }
 
 indra {
-    javaVersions().target(16)
+    javaVersions().target(17)
 }
 
 tasks {
-    shadowJar {
-        minimize()
-        sequenceOf(
-            "co.aikar.taskchain",
-            "co.aikar.idb"
-        ).forEach { pkg ->
-            relocate(pkg, "${group}.${rootProject.name.toLowerCase()}.lib.$pkg")
-        }
-    }
     build {
         dependsOn(shadowJar)
+    }
+
+    shadowJar {
+        minimize {
+            exclude(dependency("com.github.ben-manes.caffeine:caffeine:.*"))
+        }
+        isEnableRelocation = true
+        relocationPrefix = "fi.fabianadrian.mmstatbridge.dependency"
     }
 }
 
 bukkit {
     main = "fi.fabianadrian.mmstatbridge.MMStatBridge"
     name = rootProject.name
-    apiVersion = "1.17"
+    apiVersion = "1.19"
     author = "FabianAdrian"
     depend = listOf("PlaceholderAPI")
 }

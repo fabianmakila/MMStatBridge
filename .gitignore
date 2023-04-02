@@ -1,5 +1,13 @@
 # Project exclude paths
 /.gradle/
 /build/
-/build/classes/java/main/
+
+.idea/workspace.xml
+.idea/usage.statistics.xml
+.idea/shelf
+
+.idea/*.iml
+.idea/modules.xml
+
+# MacOS
 .DS_Store
