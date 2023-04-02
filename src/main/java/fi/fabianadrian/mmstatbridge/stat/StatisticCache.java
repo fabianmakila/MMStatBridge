@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 public final class StatisticCache {
 
     @Language("SQL")
-    private static final String QUERY_TEMPLATE = "SELECT * from $1%s WHERE UUID = ?;";
+    private static final String QUERY_TEMPLATE = "SELECT * FROM $1%s WHERE UUID = ?;";
     @Language("SQL")
     private final String QUERY;
 
