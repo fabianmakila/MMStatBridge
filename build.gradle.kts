@@ -28,17 +28,14 @@ indra {
 }
 
 tasks {
-    shadowJar {
-        minimize()
-        sequenceOf(
-            "co.aikar.idb",
-            "com.github.benmanes.caffeine"
-        ).forEach { pkg ->
-            relocate(pkg, "${group}.${rootProject.name.lowercase()}.lib.$pkg")
-        }
-    }
     build {
         dependsOn(shadowJar)
+    }
+
+    shadowJar {
+        minimize()
+        isEnableRelocation = true
+        relocationPrefix = "fi.fabianadrian.mmstatbridge.dependency"
     }
 }
 
