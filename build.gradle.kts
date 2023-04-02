@@ -33,7 +33,7 @@ tasks {
     }
 
     shadowJar {
-        minimize()
+        //minimize()
         isEnableRelocation = true
         relocationPrefix = "fi.fabianadrian.mmstatbridge.dependency"
     }
