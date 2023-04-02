@@ -1,7 +1,7 @@
 plugins {
-    id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("net.kyori.indra") version "2.1.1"
-    id("net.minecrell.plugin-yml.bukkit") version "0.5.1"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("net.kyori.indra") version "3.0.1"
+    id("net.minecrell.plugin-yml.bukkit") version "0.5.3"
     java
 }
 
@@ -16,8 +16,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT")
-    compileOnly("me.clip:placeholderapi:2.11.1")
+    compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
+    compileOnly("me.clip:placeholderapi:2.11.3")
     implementation("co.aikar:taskchain-bukkit:3.7.2")
     implementation("co.aikar:idb-bukkit:1.0.0-SNAPSHOT")
     implementation("com.zaxxer:HikariCP:5.0.1")
@@ -34,7 +34,7 @@ tasks {
             "co.aikar.taskchain",
             "co.aikar.idb"
         ).forEach { pkg ->
-            relocate(pkg, "${group}.${rootProject.name.toLowerCase()}.lib.$pkg")
+            relocate(pkg, "${group}.${rootProject.name.lowercase()}.lib.$pkg")
         }
     }
     build {
@@ -45,7 +45,7 @@ tasks {
 bukkit {
     main = "fi.fabianadrian.mmstatbridge.MMStatBridge"
     name = rootProject.name
-    apiVersion = "1.18"
+    apiVersion = "1.19"
     author = "FabianAdrian"
     depend = listOf("PlaceholderAPI")
 }
