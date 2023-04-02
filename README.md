@@ -7,7 +7,7 @@ A [Paper]([PaperMC/Paper](https://github.com/PaperMC/Paper)) plugin to bridge [P
 - MurderMystery connected to a MySQL based database.
 
 **Installation:**
-1. Download latest release from the Releases tab.
+1. Download latest release from the [Releases](https://github.com/fabianmakila/MMStatBridge/releases) page.
 2. Place the downloaded `MMStatBridge-x.x.x.jar` to `/plugins` folder.
 3. Start and stop the server once to generate configuration.
 4. Edit the configuration found in the `/plugins/MMStatBridge` folder.
