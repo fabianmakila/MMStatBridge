@@ -21,7 +21,7 @@ public final class StatisticCache {
     private final String QUERY;
 
     private final AsyncLoadingCache<UUID, Map<Statistic, Integer>> statistics = Caffeine.newBuilder()
-            .maximumSize(100)
+            .maximumSize(1000)
             .expireAfterWrite(5, TimeUnit.MINUTES)
             .refreshAfterWrite(30, TimeUnit.SECONDS)
             .buildAsync(this::createStatistic);
