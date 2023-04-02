@@ -2,55 +2,59 @@ package fi.fabianadrian.mmstatbridge.stat;
 
 import co.aikar.idb.DB;
 import co.aikar.idb.DbRow;
+import com.github.benmanes.caffeine.cache.AsyncLoadingCache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import fi.fabianadrian.mmstatbridge.MMStatBridge;
+import org.intellij.lang.annotations.Language;
 
 import java.sql.SQLException;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 public final class StatisticCache {
 
-    private final MMStatBridge plugin;
+    @Language("SQL")
+    private static final String QUERY_TEMPLATE = "SELECT * from $1%s WHERE UUID = ?;";
+    @Language("SQL")
+    private final String QUERY;
 
     public StatisticCache(MMStatBridge plugin) {
-        this.plugin = plugin;
+        String tableName = plugin.getConfig().getString("mysql.table");
+        this.QUERY = String.format(QUERY_TEMPLATE, tableName);
     }
 
-    private final Map<UUID, Map<Statistic, Integer>> cache = new ConcurrentHashMap<>();
+    private final AsyncLoadingCache<UUID, Map<Statistic, Integer>> statistics = Caffeine.newBuilder()
+            .maximumSize(100)
+            .expireAfterWrite(5, TimeUnit.MINUTES)
+            .refreshAfterWrite(1, TimeUnit.MINUTES)
+            .buildAsync(this::createStatistic);
 
     public int statistic(UUID uuid, Statistic statistic) {
-        Map<Statistic, Integer> statMap = this.cache.get(uuid);
+        Map<Statistic, Integer> statMap = this.statistics.synchronous().getIfPresent(uuid);
         if (statMap == null) return 0;
 
         return statMap.getOrDefault(statistic, 0);
     }
 
-    public void update(UUID uuid) {
-        final String TABLE_NAME = plugin.getConfig().getString("mysql.table");
+    private Map<Statistic, Integer> createStatistic(UUID uuid) {
+        try {
+            DbRow dbRow = DB.getFirstRow(QUERY, uuid.toString());
+            if (dbRow == null || dbRow.isEmpty()) return null;
 
-        MMStatBridge.newSharedChain("data").async(() -> {
-            try {
-                DbRow dbRow = DB.getFirstRow("SELECT * from " + TABLE_NAME + " WHERE UUID='" + uuid.toString() + "';");
-                if (dbRow == null || dbRow.isEmpty()) return;
+            Map<Statistic, Integer> statisticMap = new EnumMap<>(Statistic.class);
+            for (Statistic stat : Statistic.values()) {
+                int value = dbRow.getInt(stat.getName());
+                if (value == 0) continue;
 
-                Map<Statistic, Integer> statisticMap = new EnumMap<>(Statistic.class);
-                for (Statistic stat : Statistic.values()) {
-                    int value = dbRow.getInt(stat.getName());
-                    if (value == 0) continue;
-
-                    statisticMap.put(stat, value);
-                }
-
-                this.cache.put(uuid, statisticMap);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                statisticMap.put(stat, value);
             }
-        }).execute();
-    }
 
-    public void remove(UUID uuid) {
-        MMStatBridge.newSharedChain("data").async(() -> this.cache.remove(uuid)).execute();
+            return statisticMap;
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return null;
     }
 }

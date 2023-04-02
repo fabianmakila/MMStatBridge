@@ -13,17 +13,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class MMStatBridge extends JavaPlugin {
-
-    private static TaskChainFactory taskChainFactory;
     private StatisticCache statisticCache;
-
-    public static <T> TaskChain<T> newChain() {
-        return taskChainFactory.newChain();
-    }
-
-    public static <T> TaskChain<T> newSharedChain(String name) {
-        return taskChainFactory.newSharedChain(name);
-    }
 
     public StatisticCache statisticCache() {
         return statisticCache;
@@ -31,8 +21,6 @@ public final class MMStatBridge extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        taskChainFactory = BukkitTaskChainFactory.create(this);
-
         saveDefaultConfig();
 
         FileConfiguration config = getConfig();
