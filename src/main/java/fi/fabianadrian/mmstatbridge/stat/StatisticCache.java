@@ -40,7 +40,7 @@ public final class StatisticCache {
 
     private Map<Statistic, Integer> createStatistic(UUID uuid) {
         try {
-            DbRow dbRow = DB.getFirstRow(QUERY, uuid.toString());
+            DbRow dbRow = DB.getFirstRow(this.QUERY, uuid.toString());
             if (dbRow == null || dbRow.isEmpty()) return null;
 
             Map<Statistic, Integer> statisticMap = new EnumMap<>(Statistic.class);
