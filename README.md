@@ -1,11 +1,14 @@
-# MMStatBridge [![PaperMC Version][Badge-PaperVersion]][PaperMC-URL] [![Plugin Release][Badge-Release]][Release-URL]
+# MMStatBridge
 
-[Badge-PaperVersion]: https://img.shields.io/badge/PaperMC-1.18.1-blue?style=for-the-badge
-[PaperMC-URL]: https://papermc.io
-[Badge-Release]: https://img.shields.io/badge/Plugin_Version-0.1.0-green?style=for-the-badge
-[Release-URL]: https://github.com/fabianmakila/MMStatBridge/releases
+A [Paper]([PaperMC/Paper](https://github.com/PaperMC/Paper)) plugin to bridge [Plugily-Projects MurderMystery](https://github.com/Plugily-Projects/MurderMystery/) statistic PAPI placeholders to a server without having to have the full MurderMystery plugin running on the server.
 
-A plugin to bridge Plugily-Projects Murder Mystery statistic PAPI placeholders to a server without having to have the full Murder Mystery plugin running on the server.
-Designed mostly Hub/Lobby servers in mind.
+**Requirements:**
+- A Paper server running 1.19.x
+- MurderMystery connected to a MySQL based database.
 
-You'll need to connect this plugin to the same MySQL database that the Murder Mystery is using.
+**Installation:**
+1. Download latest release from the Releases tab.
+2. Place the downloaded `MMStatBridge-x.x.x.jar` to `/plugins` folder.
+3. Start and stop the server once to generate configuration.
+4. Edit the configuration found in the `/plugins/MMStatBridge` folder.
+5. Start the server and you are done!
