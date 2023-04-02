@@ -13,7 +13,7 @@ public final class MMStatBridge extends JavaPlugin {
     private StatisticCache statisticCache;
 
     public StatisticCache statisticCache() {
-        return statisticCache;
+        return this.statisticCache;
     }
 
     @Override
@@ -35,7 +35,7 @@ public final class MMStatBridge extends JavaPlugin {
         Database db = BukkitDB.createHikariDatabase(this, dbUser, dbPass, dbName, hostAndPort);
         DB.setGlobalDatabase(db);
 
-        statisticCache = new StatisticCache(this);
+        this.statisticCache = new StatisticCache(this);
 
         Bukkit.getPluginManager().registerEvents(new PlayerListener(this), this);
 

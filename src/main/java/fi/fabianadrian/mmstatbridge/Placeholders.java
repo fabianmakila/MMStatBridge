@@ -43,6 +43,6 @@ public final class Placeholders extends PlaceholderExpansion {
             return "0";
         }
 
-        return String.valueOf(statisticCache.statistic(player.getUniqueId(), statistic));
+        return String.valueOf(this.statisticCache.statistic(player.getUniqueId(), statistic));
     }
 }
