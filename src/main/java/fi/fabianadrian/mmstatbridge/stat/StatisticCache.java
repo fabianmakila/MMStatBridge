@@ -16,14 +16,14 @@ import java.util.concurrent.TimeUnit;
 public final class StatisticCache {
 
     @Language("SQL")
-    private static final String QUERY_TEMPLATE = "SELECT * FROM $1%s WHERE UUID = ?;";
+    private static final String QUERY_TEMPLATE = "SELECT * FROM %s WHERE UUID = ?;";
     @Language("SQL")
     private final String QUERY;
 
     private final AsyncLoadingCache<UUID, Map<Statistic, Integer>> statistics = Caffeine.newBuilder()
             .maximumSize(100)
             .expireAfterWrite(5, TimeUnit.MINUTES)
-            .refreshAfterWrite(1, TimeUnit.MINUTES)
+            .refreshAfterWrite(30, TimeUnit.SECONDS)
             .buildAsync(this::createStatistic);
 
     public StatisticCache(MMStatBridge plugin) {
@@ -33,7 +33,10 @@ public final class StatisticCache {
 
     public int statistic(UUID uuid, Statistic statistic) {
         Map<Statistic, Integer> statMap = this.statistics.synchronous().getIfPresent(uuid);
-        if (statMap == null) return 0;
+        if (statMap == null) {
+            this.statistics.get(uuid);
+            return 0;
+        }
 
         return statMap.getOrDefault(statistic, 0);
     }
@@ -45,7 +48,9 @@ public final class StatisticCache {
     private Map<Statistic, Integer> createStatistic(UUID uuid) {
         try {
             DbRow dbRow = DB.getFirstRow(this.QUERY, uuid.toString());
-            if (dbRow == null || dbRow.isEmpty()) return null;
+            if (dbRow == null || dbRow.isEmpty()) {
+                return null;
+            }
 
             Map<Statistic, Integer> statisticMap = new EnumMap<>(Statistic.class);
             for (Statistic stat : Statistic.values()) {
