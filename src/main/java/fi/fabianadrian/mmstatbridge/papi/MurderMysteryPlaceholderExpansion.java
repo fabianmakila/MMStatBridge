@@ -1,5 +1,6 @@
-package fi.fabianadrian.mmstatbridge;
+package fi.fabianadrian.mmstatbridge.papi;
 
+import fi.fabianadrian.mmstatbridge.MMStatBridge;
 import fi.fabianadrian.mmstatbridge.stat.Statistic;
 import fi.fabianadrian.mmstatbridge.stat.StatisticCache;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -8,11 +9,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public final class Placeholders extends PlaceholderExpansion {
+public final class MurderMysteryPlaceholderExpansion extends PlaceholderExpansion {
 
     private final StatisticCache statisticCache;
 
-    public Placeholders(MMStatBridge plugin) {
+    public MurderMysteryPlaceholderExpansion(MMStatBridge plugin) {
         this.statisticCache = plugin.statisticCache();
     }
 

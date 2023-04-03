@@ -8,10 +8,7 @@ import fi.fabianadrian.mmstatbridge.MMStatBridge;
 import org.intellij.lang.annotations.Language;
 
 import java.sql.SQLException;
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public final class StatisticCache {
@@ -32,16 +29,18 @@ public final class StatisticCache {
         this.QUERY = String.format(QUERY_TEMPLATE, tableName);
     }
 
-    // Returns an empty optional if data is not loaded yet
-    // Otherwise returns a number
     public Optional<Integer> statistic(UUID uuid, Statistic statistic) {
         Map<Statistic, Integer> statMap = this.statistics.synchronous().getIfPresent(uuid);
         if (statMap == null) {
-            this.statistics.get(uuid);
+            if (!this.statistics.asMap().containsKey(uuid)) {
+                // Value is not in cache yet, fetch it asynchronously
+                this.statistics.get(uuid);
+            }
             return Optional.empty();
+        } else {
+            // Return the value if it's present, or an empty Optional if it's not
+            return Optional.ofNullable(statMap.get(statistic));
         }
-
-        return Optional.of(statMap.getOrDefault(statistic, 0));
     }
 
     public void invalidate(UUID uuid) {
@@ -51,8 +50,8 @@ public final class StatisticCache {
     private Map<Statistic, Integer> createStatistic(UUID uuid) {
         try {
             DbRow dbRow = DB.getFirstRow(this.QUERY, uuid.toString());
-            if (dbRow == null || dbRow.isEmpty()) {
-                return Map.of();
+            if (dbRow.isEmpty()) {
+                return Collections.emptyMap();
             }
 
             Map<Statistic, Integer> statisticMap = new EnumMap<>(Statistic.class);
@@ -64,9 +63,8 @@ public final class StatisticCache {
             }
 
             return statisticMap;
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
+        } catch (SQLException ex) {
+            throw new IllegalStateException("Encountered a SQLException: ", ex);
         }
-        return null;
     }
 }

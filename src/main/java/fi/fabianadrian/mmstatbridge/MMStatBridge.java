@@ -4,6 +4,7 @@ import co.aikar.idb.BukkitDB;
 import co.aikar.idb.DB;
 import co.aikar.idb.Database;
 import fi.fabianadrian.mmstatbridge.listener.PlayerListener;
+import fi.fabianadrian.mmstatbridge.papi.MurderMysteryPlaceholderExpansion;
 import fi.fabianadrian.mmstatbridge.stat.StatisticCache;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -40,7 +41,7 @@ public final class MMStatBridge extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerListener(this), this);
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            new Placeholders(this).register();
+            new MurderMysteryPlaceholderExpansion(this).register();
         }
     }
 }
