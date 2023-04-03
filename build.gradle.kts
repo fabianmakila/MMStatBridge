@@ -19,7 +19,9 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.3")
     implementation("co.aikar:idb-bukkit:1.0.0-SNAPSHOT")
-    implementation("com.zaxxer:HikariCP:5.0.1")
+    implementation("com.zaxxer:HikariCP:5.0.1") {
+        exclude("org.slf4j")
+    }
     implementation("com.github.ben-manes.caffeine:caffeine:3.1.5")
 }
 
