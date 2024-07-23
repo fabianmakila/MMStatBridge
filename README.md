@@ -1,5 +1,9 @@
 # MMStatBridge
 
+> [!WARNING]
+> This plugin was originally designed for Murder Mystery version 1.7.9 and **will not work** on any newer Murder Mystery versions.
+> I personally don't have a use for this anymore so the plugin is now EOL.
+
 A [Paper]([PaperMC/Paper](https://github.com/PaperMC/Paper)) plugin to bridge [Plugily-Projects MurderMystery](https://github.com/Plugily-Projects/MurderMystery/) statistic PAPI placeholders to a server without having to have the full MurderMystery plugin running on the server.
 
 **Requirements:**
